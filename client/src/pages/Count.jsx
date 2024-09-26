@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import Footer from "../components/Footer";
 
@@ -10,7 +9,7 @@ function Count() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_API_URL}check`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/check`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,15 +31,13 @@ function Count() {
     setIsClicked(true);
     setCount(result.count);
   };
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <div className="flex flex-col">
       <Toaster position="top-right" />
-      <div className="flex-grow flex flex-col justify-center items-center">
+      <div className="flex-grow flex flex-col justify-center w-full mt-10 items-center">
         <form
           action=""
-          className="my-3 flex flex-col justify-center items-center"
+          className="my-3 flex flex-col w-full justify-center items-center"
         >
           <div className="w-full flex justify-center items-center">
             <label htmlFor="" className="text-xl">
@@ -56,7 +53,7 @@ function Count() {
           </div>
           <button
             onClick={handleClick}
-            className="mt-3 p-3 text-xl border border-black rounded hover:border-white hover:bg-black hover:text-white duration-300"
+            className="mt-3 p-3 text-xl  border border-black rounded hover:border-white hover:bg-black hover:text-white duration-300"
           >
             Check Count
           </button>
@@ -67,7 +64,6 @@ function Count() {
           </h3>
         )}
       </div>
-      <Footer />
     </div>
   );
 }

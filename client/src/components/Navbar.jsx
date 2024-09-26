@@ -1,10 +1,26 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { verifyUser } from '../features/auth/authActions';
+import { logoutUser } from '../features/auth/authSlice';
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch=useDispatch();
+    const {userInfo,userToken}=useSelector(state=>state.auth);
+    useEffect(() => {
+      if(userToken && !userInfo?.name){
+        
+        dispatch(verifyUser())
+      }
+    }, [dispatch,userToken,userInfo])
+    const handleLogout=()=>{
+      localStorage.removeItem("token")
+      dispatch(logoutUser())
+    }
   return (
-    <nav className="bg-gray-900 text-white shadow-lg">
+    <nav className="bg-gray-900 text-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -13,8 +29,22 @@ function Navbar() {
             </div>
             <div className="hidden md:flex md:items-center md:space-x-4 ml-6">
               <Link to="/" className="px-3 py-2 rounded-md font-medium hover:text-red-500 ">Home</Link>
-              <Link to="/count" className="px-3 py-2 rounded-md  font-medium hover:text-red-500">Check Count</Link>
-              {/* <Link to="/about" className="px-3 py-2 rounded-md text-sm font-medium hover:text-red-500">About</Link> */}
+              {/* <Link to="/count" className="px-3 py-2 rounded-md  font-medium hover:text-red-500">Check Count</Link> */}
+            </div>
+            <div className="hidden md:flex md:items-center md:space-x-4 ml-6">
+              {
+              userInfo && userInfo?.name?
+              <>
+              <Link to="/dashboard" className="px-3 py-2 rounded-md font-medium hover:text-red-500 ">{userInfo?.name?.split(" ")[0]}</Link>
+              <Link to='/login' className="border border-red-400 duration-200 hover:bg-red-400 bg-white  px-3 py-2 rounded-md font-medium text-red-400 hover:text-white   " onClick={handleLogout}>Logout</Link>
+              </>
+                :
+                <>
+
+              <Link to='/register' className="border border-blue-400 duration-200 hover:bg-blue-400 bg-white  px-3 py-2 rounded-md font-medium text-blue-400 hover:text-white  ">Register</Link>
+              <Link to='/login' className="border border-green-400 duration-200 hover:bg-green-400 bg-white  px-3 py-2 rounded-md font-medium text-green-400 hover:text-white ">Login</Link>
+                </>
+            }
 
             </div>
           </div>

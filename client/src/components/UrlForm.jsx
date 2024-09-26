@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
@@ -16,28 +17,31 @@ function UrlForm() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token=localStorage.getItem('token');
     const urlPattern = /^(https?:\/\/)?([\da-zA-Z0-9.-]+)\.([a-zA-Z]{2,6})([\/\w.-]*)*\/?(\?.*)?(#.*)?$/;
-    if (
-      urlPattern.test(form.url) &&
-      form.timeLimit > 0 &&
-      form.timeLimit < 48
-    ) {
+    if (urlPattern.test(form.url)) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/url/create`, // URL endpoint
+          {
+              url: form.url, // The body of the request (sent as JSON automatically)
           },
-          body: JSON.stringify({
-            url: form.url,
-            timeLimit: form.timeLimit,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-        const result=await response.json();
-        setUrl(`${process.env.REACT_APP_URL}${result.hashedUrl}`)
+          {
+              headers: {
+                  'Content-Type': 'application/json', // Content-Type header
+                  'Authorization': `Bearer ${token}`, // Authorization header with Bearer token
+              },
+          }
+      );
+      
+      
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok " + response.statusText);
+        // }
+        // const result=await response.json();
+        console.log(response);
+        
+        setUrl(`${process.env.REACT_APP_URL}/${response.data.url.hashedUrl}`)
         toast.success("Shortened URL created successfully");
       } catch (error) {
         toast.error("There was an error creating the shortened URL");
@@ -49,11 +53,11 @@ function UrlForm() {
     }
   };
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
       <Toaster position="top-right"/>
       <form
         action=""
-        className="flex flex-col my-5 gap-4 w-full justify-center items-center"
+        className="flex flex-col my-20 gap-4 w-full justify-center items-center"
       >
         <div className="flex items-center w-full justify-center">
           <label htmlFor="" className="text-xl">
@@ -68,7 +72,7 @@ function UrlForm() {
             onChange={handleChange}
           />
         </div>
-        <div className="flex items-center w-full justify-center">
+        {/* <div className="flex items-center w-full justify-center">
           <label htmlFor="" className="text-xl">
             Hours:-{" "}
           </label>
@@ -82,10 +86,10 @@ function UrlForm() {
             value={form.timeLimit}
             onChange={handleChange}
           />
-        </div>
-        <span className="text-sm text-gray-500">
+        </div> */}
+        {/* <span className="text-sm text-gray-500">
           *Note:-Link can be active for min 1 hr and max 48 hrs.{" "}
-        </span>
+        </span> */}
         <button
           onClick={handleSubmit}
           className="bg-blue-400 text-white p-4 text-xl rounded border border-blue-400 hover:bg-white hover:text-blue-400 duration-300"

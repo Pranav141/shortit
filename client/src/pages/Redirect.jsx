@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import { useParams, Navigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { FaDirections } from "react-icons/fa";
-import Footer from "../components/Footer";
+import axios from "axios";
 
 function Redirect() {
   const { id } = useParams();
@@ -13,10 +12,11 @@ function Redirect() {
   useEffect(() => {
     const fetchUrl = async () => {
       try {
-        const apiUrl = process.env.REACT_APP_API_URL + id;
-        const res = await fetch(`${apiUrl}`);
-        const result = await res.json();
-
+        const apiUrl = process.env.REACT_APP_API_URL +"/"+ id;
+        console.log(apiUrl);
+        const res = await axios.get(apiUrl);
+        console.log(res);
+        
         if (res.status !== 200) {
           toast.error(
             "URL not available/expired. Redirecting to home in 3 seconds.",
@@ -24,13 +24,14 @@ function Redirect() {
           );
           setCountdown(3);
           setError(true);
-        } else {
+        } 
+        else {
           toast.success(`Redirecting to the original URL in 5 seconds`, {
             duration: 5000,
           });
           setCountdown(5);
           setTimeout(() => {
-            window.location.replace(result.url);
+            window.location.href = res.data
           }, 5000);
         }
       } catch (err) {
@@ -54,13 +55,12 @@ function Redirect() {
   }, [countdown]);
 
   if (error && countdown === 0) {
-    return <Navigate to="/" />;
+    return <Navigate to="*" />;
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <Toaster position="top-right" />
-      <Navbar />
       <div className="flex-grow w-full h-full flex flex-col justify-center items-center p-10">
         <FaDirections className="text-9xl" />
         {error && (
@@ -78,7 +78,6 @@ function Redirect() {
           </div>
         }
       </div>
-      <Footer />
     </div>
   );
 }
