@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Home from './pages/Home';
-import Count from "./pages/Count";
 import Redirect from "./pages/Redirect";
 import Error from "./pages/Error";
 import store from './app/store'
@@ -12,7 +11,6 @@ import Footer from "./components/Footer";
 import RequireAuth from "./components/RequireAuth";
 import Dashboard from "./pages/Dashboard";
 import UrlsDashboard from "./pages/UrlsDashboard";
-import { ThemeProvider } from "@material-tailwind/react";
 import Url from "./pages/Url";
 function App() {
   return (
@@ -35,10 +33,15 @@ function App() {
               <UrlsDashboard />
             </RequireAuth>
           } />
+
+          <Route path="/url/:urlId" element={
+            <RequireAuth>
+              <Url />
+            </RequireAuth>
+          } />
           <Route path='/:id' element={<Redirect />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/url/:urlId" element={<Url />} />
 
           <Route path='*' element={<Error />} />
 

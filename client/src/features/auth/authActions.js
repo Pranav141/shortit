@@ -9,7 +9,7 @@ export const registerUser=createAsyncThunk(
                     'Content-Type': 'application/json',
                 }
             }
-            let data=await axios.post("http://localhost:8080/user/register",{name,email,password},config)
+            let data=await axios.post(`${process.env.REACT_APP_API_URL}/user/register`,{name,email,password},config)
             console.log(data);
             localStorage.setItem('token',data.data.token)           
             return data.data;
@@ -34,7 +34,7 @@ export const loginUser=createAsyncThunk(
                     'Content-Type': 'application/json',
                 }
             }
-            const response=await axios.post("http://localhost:8080/user/login",{email,password},config)
+            const response=await axios.post(`${process.env.REACT_APP_API_URL}/user/login`,{email,password},config)
             console.log(response);
             
             localStorage.setItem("token", response.data.token)
@@ -61,7 +61,7 @@ export const verifyUser=createAsyncThunk(
                     "Authorization":`Bearer ${token}`
                 }
             }
-            const response=await axios.get("http://localhost:8080/user/verify",config)
+            const response=await axios.get(`${process.env.REACT_APP_API_URL}/user/verify`,config)
             
             return response.data
         } catch (error) {
