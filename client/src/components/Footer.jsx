@@ -8,7 +8,7 @@ function Footer() {
       <div className="container mx-auto text-center">
         <div className="flex justify-center items-center">
           <a
-            href="https://www.linkedin.com/in/pranav-kokate/"
+            href="https://shortit-nu.vercel.app//gerthTuE"
             target="_blank"
             rel="noopener noreferrer"
             className="mx-1 text-3xl hover:text-blue-400"
@@ -16,7 +16,7 @@ function Footer() {
             <FaLinkedin />
           </a>
           <a
-            href="https://github.com/Pranav141"
+            href="https://shortit-nu.vercel.app//FvgMbkcv"
             target="_blank"
             rel="noopener noreferrer"
             className="mx-1 text-3xl hover:text-green-400"
@@ -24,7 +24,7 @@ function Footer() {
             <FaGithub />
           </a>
           <a
-            href="https://x.com/PranavKokate121"
+            href="https://shortit-nu.vercel.app//V_ZU55aR"
             target="_blank"
             rel="noopener noreferrer"
             className="mx-1 text-3xl hover:text-red-400"
@@ -32,7 +32,7 @@ function Footer() {
             <FaXTwitter />
           </a>
           <a
-            href="https://leetcode.com/u/Pranavkokate121/"
+            href="https://shortit-nu.vercel.app//oBM-_kPs"
             target="_blank"
             rel="noopener noreferrer"
             className="mx-1 text-3xl hover:text-yellow-400 "
